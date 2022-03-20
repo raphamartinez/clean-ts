@@ -1,9 +1,9 @@
 {
     "compilerOptions": {
-        "outDir": "./dist", //pasta que tera o arquivo convertido
-        "module": "commonjs", // permite import e export enquanto o node nao da suporte, commonjs e o formato que os browser entendem por enquanto
-        "target": "es2019", //versao que o .ts sera convertida em node
-        "esModuleInterop": true, //transforma import em require por baixo dos panos
-        "allowJs": true //habilita arquivos de configuracao .js, sem ele apenas .json
+        "outDir": "./dist", 
+        "module": "commonjs", 
+        "target": "ES2019", 
+        "esModuleInterop": true, 
+        "allowJs": true ,
     }
 }
