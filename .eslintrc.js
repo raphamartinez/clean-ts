@@ -9,6 +9,8 @@ exports = {
     'plugin:@typescript-eslint/recommended',
   ],
   parserOptions: {
-    project: ["./tsconfig.json"]
+    project: ["./tsconfig.json"],
+    sourceType: 'module',
+    ecmaVersion: 2019
   },
 };
