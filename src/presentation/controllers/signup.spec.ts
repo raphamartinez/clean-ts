@@ -1,7 +1,6 @@
 import { SignUpController } from './signup'
-import { MissingParamError, InvalidParamError } from '../errors'
+import { MissingParamError, InvalidParamError, ServerError } from '../errors'
 import { EmailValidator } from '../protocols'
-import { ServerError } from '../errors/server-error'
 
 interface SutTypes {
     sut: SignUpController
@@ -83,6 +82,21 @@ describe('SignUp Controller', () => {
         expect(httpResponse.body).toEqual(new MissingParamError('passwordConfirmation'))
     });
 
+    test('Should return 400 if password confirmation fails', () => {
+        const { sut } = makeSut()
+        const httpRequest = {
+            body: {
+                name: 'any_name',
+                email: 'any_email@mail.com',
+                password: 'any_password',
+                passwordConfirmation: 'invalid_password'
+            }
+        }
+        const httpResponse = sut.handle(httpRequest)
+        expect(httpResponse.statusCode).toBe(400)
+        expect(httpResponse.body).toEqual(new InvalidParamError('passwordConfirmation'))
+    });
+
     test('Should return 400 if an invalid email is provided', () => {
         const { sut, emailValidatorStub } = makeSut()
         jest.spyOn(emailValidatorStub, 'isValid').mockReturnValueOnce(false)
@@ -91,7 +105,7 @@ describe('SignUp Controller', () => {
                 name: 'any_name',
                 email: 'invalid_email@mail.com',
                 password: 'any_password',
-                passwordConfirmation: 'passwordConfirmation'
+                passwordConfirmation: 'any_password'
             }
         }
         const httpResponse = sut.handle(httpRequest)
@@ -107,7 +121,7 @@ describe('SignUp Controller', () => {
                 name: 'any_name',
                 email: 'any_email@mail.com',
                 password: 'any_password',
-                passwordConfirmation: 'passwordConfirmation'
+                passwordConfirmation: 'any_password'
             }
         }
         sut.handle(httpRequest)
@@ -124,7 +138,7 @@ describe('SignUp Controller', () => {
                 name: 'any_name',
                 email: 'any_email@mail.com',
                 password: 'any_password',
-                passwordConfirmation: 'passwordConfirmation'
+                passwordConfirmation: 'any_password'
             }
         }
         const httpResponse = sut.handle(httpRequest)
